@@ -71,6 +71,18 @@ print("Ступінь кожної вершини:")
 for node, degree in degrees.items():
     print(f"{node}: {degree}")
 
+
+# Обхід DFS
+dfs_tree = nx.dfs_tree(G, source='Odesa')
+print("DFS-дерево:")
+print(list(dfs_tree.edges()))  # виведе ребра DFS-дерева з коренем у вузлі Odesa
+# Обхід BFS
+bfs_tree = nx.bfs_tree(G, source='Odesa')
+print("\nBFS-дерево:")
+print(list(bfs_tree.edges()))  # виведе ребра BFS-дерева з коренем у вузлі Odesa
+
+
+# Відображення графа
 # Присвоєння кольорів вузлам за регіонами
 node_colors = []
 for node in G.nodes():
