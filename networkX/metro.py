@@ -40,6 +40,15 @@ bfs_tree = nx.bfs_tree(G, source='Головна')
 print("\nBFS-дерево:")
 print(list(bfs_tree.edges()))  # виведе ребра BFS-дерева з коренем у вузлі Головна
 
+# Найкоротші шляхи між всіма парами вершин
+all_paths = dict(nx.all_pairs_dijkstra_path(G))
+all_lengths = dict(nx.all_pairs_dijkstra_path_length(G))
+for source in all_paths:
+    print(f"\nНайкоротші шляхи з {source}:")
+    for target in all_paths[source]:
+        path = all_paths[source][target]
+        length = all_lengths[source][target]
+        print(f"  до {target} {length} хв: шлях {path}")
 
 # Візуалізація графа
 pos = nx.spring_layout(G, seed=42)
