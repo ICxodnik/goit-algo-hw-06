@@ -3,21 +3,26 @@ import matplotlib.pyplot as plt
 
 # Створення графа (метро Києва)
 graph = {
-    'Головна': ['Кловська', 'Палац Спорту'],
-    'Кловська': ['Головна', 'Палац Спорту', 'Арсенальна'],
-    'Палац Спорту': ['Головна', 'Кловська', 'Печерська'],
-    'Печерська': ['Палац Спорту', 'Арсенальна', 'Либідська'],
-    'Арсенальна': ['Кловська', 'Печерська'],
-    'Либідська': ['Печерська', 'Дружби Народів'],
-    'Дружби Народів': ['Либідська', 'Голосіївська'],
-    'Голосіївська': ['Дружби Народів', 'Виставковий центр'],
-    'Виставковий центр': ['Голосіївська']
+    'Головна': {'Кловська': 2, 'Палац Спорту': 3},
+    'Кловська': {'Головна': 2, 'Палац Спорту': 2, 'Арсенальна': 4},
+    'Палац Спорту': {'Головна': 3, 'Кловська': 2, 'Печерська': 4},
+    'Печерська': {'Палац Спорту': 4, 'Арсенальна': 3, 'Либідська': 5},
+    'Арсенальна': {'Кловська': 4, 'Печерська': 3},
+    'Либідська': {'Печерська': 5, 'Дружби Народів': 6},
+    'Дружби Народів': {'Либідська': 6, 'Голосіївська': 4},
+    'Голосіївська': {'Дружби Народів': 4, 'Виставковий центр': 3},
+    'Виставковий центр': {'Голосіївська': 3}
 }
 
 # Створення графа в networkx
-G = nx.Graph(graph)
+G = nx.Graph()
 
-#Аналіз
+# Додаємо вершини і ребра
+for node, edges in graph.items():
+    for neighbor, weight in edges.items():
+        G.add_edge(node, neighbor, weight=weight)
+
+# Аналіз
 print(f"Кількість вершин: {G.number_of_nodes()}")
 print(f"Кількість ребер: {G.number_of_edges()}")
 degrees = dict(G.degree())
@@ -29,15 +34,24 @@ for node, degree in degrees.items():
 dfs_tree = nx.dfs_tree(G, source='Головна')
 print("DFS-дерево:")
 print(list(dfs_tree.edges()))  # виведе ребра DFS-дерева з коренем у вузлі Головна
+
 # Обхід BFS
 bfs_tree = nx.bfs_tree(G, source='Головна')
 print("\nBFS-дерево:")
 print(list(bfs_tree.edges()))  # виведе ребра BFS-дерева з коренем у вузлі Головна
 
+
 # Візуалізація графа
 pos = nx.spring_layout(G, seed=42)
+labels = nx.get_edge_attributes(G, 'weight') 
+
+# Малювання графа
 plt.figure(figsize=(10, 8))
-nx.draw(G, pos, with_labels=True, node_size=3000, node_color='lightblue', font_size=5, font_weight='bold', edge_color='gray')
+nx.draw(G, pos, with_labels=True, node_size=3000, node_color='lightblue', font_size=10, font_weight='bold', edge_color='gray')
+
+# Малювання ваг на ребрах з налаштуванням шрифтів
+nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_size=12, font_color='black')
+
 plt.title("Транспортна мережа метрополітену Києва")
 plt.show()
 
