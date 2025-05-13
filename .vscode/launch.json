@@ -1,0 +1,9 @@
+"configurations": [
+  {
+    "name": "Python: metro",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/networkX/metro.py",
+    "cwd": "${workspaceFolder}"  // ← ключевой параметр
+  }
+]
