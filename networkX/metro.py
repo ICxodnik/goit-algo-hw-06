@@ -1,5 +1,11 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from graph_search_algo.bfs import bfs_iterative
+from graph_search_algo.dfs import dfs_iterative
+from dijkstra_algo.dijkstra import dijkstra
 
 # Створення графа (метро Києва)
 graph = {
@@ -34,13 +40,16 @@ for node, degree in degrees.items():
 dfs_tree = nx.dfs_tree(G, source='Головна')
 print("DFS-дерево:")
 print(list(dfs_tree.edges()))  # виведе ребра DFS-дерева з коренем у вузлі Головна
+dfs_iterative(G, 'Головна')
 
 # Обхід BFS
 bfs_tree = nx.bfs_tree(G, source='Головна')
 print("\nBFS-дерево:")
 print(list(bfs_tree.edges()))  # виведе ребра BFS-дерева з коренем у вузлі Головна
+bfs_iterative(G, 'Головна')
 
 # Найкоротші шляхи між всіма парами вершин
+dijkstra(graph, 'Головна')
 all_paths = dict(nx.all_pairs_dijkstra_path(G))
 all_lengths = dict(nx.all_pairs_dijkstra_path_length(G))
 for source in all_paths:
